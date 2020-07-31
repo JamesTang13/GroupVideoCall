@@ -32,13 +32,13 @@ const Video = (props) => {
   return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
-const stop = () => {
-  SpeechRecognition.stopListening();
-};
+// const stop = () => {
+//   SpeechRecognition.stopListening();
+// };
 
-const start = () => {
-  SpeechRecognition.startListening({ language: "zh-HK", continuous: true });
-};
+// const start = () => {
+//   SpeechRecognition.startListening({ language: "zh-HK", continuous: true });
+// };
 
 const videoConstraints = {
   height: window.innerHeight / 2,
@@ -46,7 +46,7 @@ const videoConstraints = {
 };
 
 const Room = (props) => {
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  //   const { transcript, resetTranscript } = useSpeechRecognition();
 
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
@@ -125,6 +125,21 @@ const Room = (props) => {
     return peer;
   }
 
+  const [message, setMessage] = useState("");
+  const commands = [
+    {
+      command: "I would like to order *",
+      callback: (food) => setMessage(`Your order is for: ${food}`),
+    },
+    {
+      command: "*Hello*",
+      callback: () => setMessage(`Hi there`),
+      matchInterim: true,
+    },
+  ];
+
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
+
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return null;
   }
@@ -142,6 +157,7 @@ const Room = (props) => {
       <button onClick={start}>Start</button>
       <button onClick={stop}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
+      <p>{message}</p>
       <p>{transcript}</p>
       <Container>
         <StyledVideo muted ref={userVideo} autoPlay playsInline />
