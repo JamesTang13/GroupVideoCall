@@ -5,6 +5,7 @@ const app = express();
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
+const path = require("path");
 
 const users = {};
 
@@ -51,6 +52,18 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+// app.use(express.static(path.join(__dirname, "build")));
+// app.get("/", function (req, res) {
+//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
+
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("client/build"));
+//   app.get("*", (req, res) =>
+//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+//   );
+// }
 
 server.listen(process.env.PORT || 8000, () =>
   console.log("server is running on port 8000")

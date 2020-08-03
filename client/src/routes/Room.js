@@ -126,14 +126,55 @@ const Room = (props) => {
   }
 
   const [message, setMessage] = useState("");
+  const [food, setFood] = useState("");
   const commands = [
+    // {
+    //   command: "I would like to order *",
+    //   callback: (food) => setMessage(`Your order is for: ${food}`),
+    // },
+    // {
+    //   command: "*Hello*",
+    //   callback: () => setMessage(`Hi there`),
+    //   matchInterim: true,
+    // },
     {
-      command: "I would like to order *",
-      callback: (food) => setMessage(`Your order is for: ${food}`),
+      command: "*PHP*",
+      callback: () => {
+        let msg = message;
+        if (!msg.includes("php")) {
+          msg = message + "php ";
+          setMessage(msg);
+        }
+      },
+      matchInterim: true,
     },
     {
-      command: "*Hello*",
-      callback: () => setMessage(`Hi there`),
+      command: "*JAVA*",
+      callback: () => {
+        let msg = message;
+        if (!msg.includes("java")) {
+          msg = message + "java ";
+          setMessage(msg);
+        }
+      },
+      matchInterim: true,
+    },
+    {
+      command: "*hot dog*",
+      callback: () => {
+        if (!food.includes("hot dog")) {
+          setFood(food + " hot dog");
+        }
+      },
+      matchInterim: true,
+    },
+    {
+      command: "*burger*",
+      callback: () => {
+        if (!food.includes("burger")) {
+          setFood(food + " burger");
+        }
+      },
       matchInterim: true,
     },
   ];
@@ -158,13 +199,12 @@ const Room = (props) => {
       <button onClick={stop}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
       <p>{message}</p>
+      <br />
+      <p>{food}</p>
       <p>{transcript}</p>
       <Container>
         <StyledVideo muted ref={userVideo} autoPlay playsInline />
-        {/* <button onClick={start}>Start</button>
-            <button onClick={stop}>Stop</button>
 
-            <button onClick={resetTranscript}>Reset</button> */}
         {peers.map((peer, index) => {
           return <Video key={index} peer={peer} />;
         })}
